@@ -1,6 +1,6 @@
-const express = require('express');
-const path = require('path');
-const { OpenAIClient, AzureKeyCredential } = require('@azure/openai');
+const express = require("express");
+const path = require("path");
+const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
 
 const app = express();
 const port = 3000;
@@ -17,13 +17,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.post("/generate", async (req, res) => {
-    const { prompt, style, quality } = req.body;
+    const { prompt, size, style, quality } = req.body;
 
     // Assuming 'style' and 'quality' can be incorporated in the prompt for image generation
     const modifiedPrompt = `${prompt}, style: ${style}, quality: ${quality}`;
 
     try {
-        const results = await client.getImages(deploymentName, modifiedPrompt, { n: 1, size: '1024x1024' });
+        const results = await client.getImages(deploymentName, modifiedPrompt, { n: 1, size });
         res.json({ imageUrls: results.data.map(image => image.url) });
     } catch (err) {
         console.error("Error generating image:", err);
